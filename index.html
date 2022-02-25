@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>Media</title>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+
+<body id="body">
+
+    <div id="title">
+        <h1>媒体播放器</h1>
+    </div>
+    <iframe class="frame" v-if="index == 0" src="film.html" frameborder="0"></iframe>
+    <iframe class="frame" v-else src="music.html" frameborder="0"></iframe>
+    <div class="tab-bar">
+        <div @click="selectIndex(0)" class="tab-item">
+            <img class="item-icon-normal" :class="{'item-icon-active' : index==0}" src="asset/video.png">
+            <p class="item-title-normal" :class="{'item-title-active' : index==0}">视频</p>
+        </div>
+        <div @click="selectIndex(1)" class="tab-item">
+            <img class="item-icon-normal" :class="{'item-icon-active' : index==1}" src="asset/audio.png">
+            <p class="item-title-normal" :class="{'item-title-active' : index==1}">音频</p>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>

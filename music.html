@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+    <title>音乐</title>
+    <script src="vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="music.css">
+</head>
+
+<body class="body">
+    <div class="search-bar">
+        <input class="search-field" type="text" v-model="keyword" placeholder="请输入搜索关键字">
+        <button class="search-cancel" @click="cancelClick">取消</button>
+    </div>
+
+    <div class="middle">
+        <div v-if="searching" class="list">
+            <div v-for="(item,index) in searchs" class="music-item" @click="selectIndex(index)">
+                <img class="music-icon" src="asset/music.png">
+                {{item.artist}} - {{item.name}}[{{item.album}}]
+            </div>
+        </div>
+        <div v-else class="list">
+            <div v-for="(item,index) in items" class="music-item" @click="selectIndex(index)">
+                <img class="music-icon" src="asset/music.png">
+                {{item.artist}} - {{item.name}}[{{item.album}}]
+            </div>
+        </div>
+    </div>
+
+    <div class="player-view">
+        <audio ref="player" controls autoplay preload="auto" @ended="finished">
+            <source v-bind:src="audio_url" type="audio/mpeg">
+        </audio>
+        <div class="info">
+            <p class="audio-info">{{audio_artist}} - {{audio_name}}[{{audio_album}}]</p>
+        </div>
+    </div>
+    <script src="music.js"></script>
+</body>
+
+</html>
