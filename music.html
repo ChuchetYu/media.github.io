@@ -20,13 +20,13 @@
     <div class="middle">
         <div v-if="searching" class="list">
             <div v-for="(item,index) in searchs" class="music-item" @click="selectIndex(index)">
-                <img class="music-icon" src="asset/music.png">
+                <img class="music-icon" src="music.png">
                 {{item.artist}} - {{item.name}}[{{item.album}}]
             </div>
         </div>
         <div v-else class="list">
             <div v-for="(item,index) in items" class="music-item" @click="selectIndex(index)">
-                <img class="music-icon" src="asset/music.png">
+                <img class="music-icon" src="music.png">
                 {{item.artist}} - {{item.name}}[{{item.album}}]
             </div>
         </div>
