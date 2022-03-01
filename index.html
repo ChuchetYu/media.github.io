@@ -19,11 +19,11 @@
     <iframe class="frame" v-else src="music.html" frameborder="0"></iframe>
     <div class="tab-bar">
         <div @click="selectIndex(0)" class="tab-item">
-            <img class="item-icon-normal" :class="{'item-icon-active' : index==0}" src="asset/video.png">
+            <img class="item-icon-normal" :class="{'item-icon-active' : index==0}" src="video.png">
             <p class="item-title-normal" :class="{'item-title-active' : index==0}">视频</p>
         </div>
         <div @click="selectIndex(1)" class="tab-item">
-            <img class="item-icon-normal" :class="{'item-icon-active' : index==1}" src="asset/audio.png">
+            <img class="item-icon-normal" :class="{'item-icon-active' : index==1}" src="audio.png">
             <p class="item-title-normal" :class="{'item-title-active' : index==1}">音频</p>
         </div>
     </div>
