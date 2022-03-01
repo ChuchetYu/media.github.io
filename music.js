@@ -22,73 +22,83 @@ const app = {
     },
     methods: {
         selectIndex(value) {
+            this.index = value;
             if (this.searching == true) {
-
+                var item = this.searchs[value];
+                this.audio_name = item.name;
+                this.audio_artist = item.artist;
+                this.audio_album = item.album;
+                this.infoResult(item.id);
             } else {
-                this.index = value;
                 var item = this.items[value];
                 this.audio_name = item.name;
                 this.audio_artist = item.artist;
                 this.audio_url = item.url;
                 this.audio_album = item.album;
-                var audio = this.$refs.player;
+                let audio = this.$refs.player;
                 audio.pause();
                 audio.load();
                 audio.play();
             }
         },
         searchClick(key) {
-
-            var request = new Request('https://api.zhuolin.wang/api.php?types=search&source=netease&count=10&name=1', {
-                method: 'GET',
-                mode: 'cors',
-                redirect: 'follow',
-                headers: new Headers({
-                    'Content-Type': 'text/plain',
-                    'Access-Control-Allow-Origin': 'https://api.zhuolin.wang'
-                })
+            let _this = this;
+            $.ajax({
+                url: 'https://api.zhuolin.wang/api.php?types=search&source=netease&count=30&name=' + key,
+                dataType: "jsonp",
+                success: function (jsonData) {
+                    var array = [];
+                    for (i = 0, len = jsonData.length; i < len; i++) {
+                        let object = jsonData[i];
+                        var item = {
+                            id: object.id,
+                            name: object.name,
+                            gsid: 0,
+                            artist: object.artist.join('、'),
+                            url: '',
+                            album: object.album,
+                        }
+                        array.push(item);
+                    }
+                    _this.searchs = array;
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.error(XMLHttpRequest + textStatus + errorThrown);
+                }
             });
-            fetch(request).then(res => {
-                    console.log("aaaaaa", res);
-                    alert('aaaaa',res);
-                    return res;
-                })
-                .then(data => {
-                    console.log("ppppppppp", data);
-                }).catch(function (error) {
-                    console.log("qqqqqqqq", error);
-                });
-
-            
-
-            // fetch('https://api.zhuolin.wang/api.php?types=search&source=netease&count=10&name=1', {
-            //         method: "GET",
-            //         mode: "no-cors",
-            //         credentials: 'include',
-            //         headers: {
-            //             'Accept': 'application/json',
-            //             'Content-Type': 'application/json',
-            //             'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT',
-            //             'Access-Control-Allow-Origin': '*'
-            //         },
-            //     }).then(res => {
-            //         console.log("aaaaaa", res);
-            //         return res;
-            //     })
-            //     .then(data => {
-            //         console.log("ppppppppp", data);
-            //     }).catch(function (error) {
-            //         console.log("qqqqqqqq", error);
-            //     });
+        },
+        infoResult(key) {
+            let _this = this;
+            $.ajax({
+                url: 'https://api.zhuolin.wang/api.php?&types=url&source=netease&id=' + key,
+                dataType: "jsonp",
+                success: function (jsonData) {
+                    let url = jsonData.url;
+                    if(url.indexOf('http') != -1){
+                        _this.audio_url = jsonData.url;
+                        let audio = _this.$refs.player;
+                        audio.pause();
+                        audio.load();
+                        audio.load();
+                    }
+                    else {
+                        _this.album = '暂无播放源，自动播放下一首';
+                        _this.finished();
+                    }
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    console.error(XMLHttpRequest + textStatus + errorThrown);
+                }
+            });
         },
         finished() {
             this.index += 1;
-            if (this.index >= this.items.len) {
+            if (this.index >= this.items.length) {
                 this.index = 0;
             }
             this.selectIndex(this.index);
         },
-        cancelClick(){
+        cancelClick() {
             this.keyword = '';
             this.searching = false;
         }
@@ -98,11 +108,8 @@ const app = {
         keyword: function (value) {
             var string = value.replaceAll(' ', '');
             this.searching = string.length != 0;
-            if(this.searching){
-                // this.searchClick(value);
-            }
-            else {
-                
+            if (this.searching) {
+                this.searchClick(value);
             }
         }
     },

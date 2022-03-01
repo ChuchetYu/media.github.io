@@ -12,20 +12,14 @@
 
 <body class="body">
     <div class="search-bar">
-        <input class="search-field" type="text" v-model="keyword" placeholder="请输入搜索关键字">
-        <button class="search-cancel" v-on:click="cancelClick">取消</button>
+        <input class="search-field" type="text" v-model="keyword" placeholder="请输入影视名称或播放地址">
+        <button class="search-cancel" v-on:click="cancelClick">解析</button>
     </div>
 
     <div class="middle">
-        <div v-if="searching" class="list">
-            <div v-for="(item,index) in searchs" class="film-item" @click="selectIndex(index)">
-                <img class="film-icon" src="film.png">
-                {{item.name}}
-            </div>
-        </div>
-        <div v-else class="list">
+        <div class="list">
             <div v-for="(item,index) in items" class="film-item" @click="selectIndex(index)">
-                <img class="film-icon" src="film.png">
+                <img class="film-icon" src="asset/film.png">
                 {{item.name}}
             </div>
         </div>

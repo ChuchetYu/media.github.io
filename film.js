@@ -12,9 +12,7 @@ const app = {
             video_name: array[0].name,
             video_url: array[0].url,
             keyword: "",
-            searching: false,
             items: array,
-            searchs: []
         }
     },
     methods: {
@@ -27,45 +25,22 @@ const app = {
             video.load();
             video.play();
         },
-        searchClick(key) {
-            fetch('https://a1.m1907.cn/api/v', {
-                    method: "GET",
-                    mode: "no-cors",
-                    credentials: 'include',
-                    redirect: 'follow',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, DELETE, PUT',
-                        'Access-Control-Allow-Origin': 'https://a1.m1907.cn'
-                    },
-                }).then(res => {
-                    console.log("aaaaaa", res.json());
-                    return res;
-                })
-                .then(data => {
-                    console.log("ppppppppp", data);
-                }).catch(function (error) {
-                    console.log("qqqqqqqq", error);
-                });
-        },
-        cancelClick(){
-            this.keyword = '';
-            this.searching = false;
+        cancelClick() {
+            var string = this.keyword.replaceAll(' ', '');
+            if (string.length == 0) {
+                alert('关键字不能为空');
+            } else {
+                var play = 'https://z1.m1907.cn/?jx=' + this.keyword;
+                this.keyword = '';
+                console.log(play);
+                window.location.href = play;
+            }
         }
     },
     watch: {
         //监听变化
         keyword: function (value) {
-            console.log('value='+value);
-            var string = value.replaceAll(' ', '');
-            this.searching = string.length != 0;
-            if(this.searching){
-                // this.searchClick(value);
-            }
-            else {
-                
-            }
+            
         }
     },
     mounted() {
