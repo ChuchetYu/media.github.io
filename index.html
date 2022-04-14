@@ -5,27 +5,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-    <title>Media</title>
+    <title>Chuchet</title>
     <script src="vue.js"></script>
+    <script src="jquery.js"></script>
     <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 
 <body id="body">
-
-    <div id="title">
-        <h1>媒体播放器</h1>
+    <div class="top">
+        <span class="top-logo">Chuchet</span>
+        <div class="top-search">
+            <input class="top-field" type="text" v-model="keyword" placeholder="请输入关键字">
+            <button class="top-cancel" :class="{'top-cancel-none' : !searching}" v-on:click="cancelClick">×</button>
+        </div>
     </div>
-    <iframe class="frame" v-if="index == 0" src="film.html" frameborder="0"></iframe>
-    <iframe class="frame" v-else src="music.html" frameborder="0"></iframe>
-    <div class="tab-bar">
-        <div @click="selectIndex(0)" class="tab-item">
-            <img class="item-icon-normal" :class="{'item-icon-active' : index==0}" src="video.png">
-            <p class="item-title-normal" :class="{'item-title-active' : index==0}">视频</p>
-        </div>
-        <div @click="selectIndex(1)" class="tab-item">
-            <img class="item-icon-normal" :class="{'item-icon-active' : index==1}" src="audio.png">
-            <p class="item-title-normal" :class="{'item-title-active' : index==1}">音频</p>
-        </div>
+    <div class="middle">
+        <ul class="middle-header">
+            <li class="middle-title">歌曲名</li>
+            <li class="middle-title">歌手</li>
+            <li class="middle-title">专辑</li>
+        </ul>
+        <ul class="middle-list">
+            <li v-for="(item,index) in (searching ? searchs : items)" class="middle-item">
+                <a href="#" class="middle-item-title" @click="selectIndex(index)">{{item.artist}} - {{item.name}}</a>
+                <a href="#" class="middle-item-title" @click="readySearch(item.artist)">{{item.artist}}</a>
+                <a class="middle-item-title" @click="">{{item.album}}</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="bottom">
+        <audio class="bottom-palyer" ref="player" controls autoplay preload="auto" @ended="finished">
+            <source v-bind:src="audio_url" type="audio/mpeg">
+        </audio>
+        <marquee class="bottom-info" behavior="scroll" direction="left" scrollamount="8" scrolldelay="0">
+            <p class="audio-info">正在播放：{{audio_artist}} - {{audio_name}}[{{audio_album}}]</p>
+        </marquee>
     </div>
     <script src="index.js"></script>
 </body>
